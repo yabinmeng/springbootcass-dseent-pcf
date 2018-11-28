@@ -119,3 +119,106 @@ truststore_pass> <client_truststore_password>
 Creating user provided service mycassauth-service in org datastax-test / space mytestspace as <registered_trial_account_email>...
 OK
 ```
+
+After this, we can go to the PCF web service console Web UI to view the service details.
+
+## Deploy the Application 
+
+The application is developed in a way that it will read the required credentials from the PCF user provided service (**mycassauth-service**). Once the service is created, we need to push the application to PCF and bind it with the service.
+
+1) Push the application
+```
+$ cf push mybookrating -p ./build/libs/mybookrating-0.0.1-SNAPSHOT.jar
+Pushing app mybookrating to org datastax-test / space mytestspace as <registered_trial_account_email>...
+Getting app info...
+Updating app with these attributes...
+  name:                mybookrating
+  path:                <some_root_folder>/build/libs/mybookrating-0.0.1-SNAPSHOT.jar
+  command:             JAVA_OPTS="-agentpath:$PWD/.java-buildpack/open_jdk_jre/bin/jvmkill-1.16.0_RELEASE=printHeapHistogram=1 -Djava.io.tmpdir=$TMPDIR -Djava.ext.dirs=$PWD/.java-buildpack/container_security_provider:$PWD/.java-buildpack/open_jdk_jre/lib/ext -Djava.security.properties=$PWD/.java-buildpack/java_security/java.security $JAVA_OPTS" && CALCULATED_MEMORY=$($PWD/.java-buildpack/open_jdk_jre/bin/java-buildpack-memory-calculator-3.13.0_RELEASE -totMemory=$MEMORY_LIMIT -loadedClasses=16498 -poolType=metaspace -stackThreads=250 -vmOptions="$JAVA_OPTS") && echo JVM Memory Configuration: $CALCULATED_MEMORY && JAVA_OPTS="$JAVA_OPTS $CALCULATED_MEMORY" && MALLOC_ARENA_MAX=2 SERVER_PORT=$PORT eval exec $PWD/.java-buildpack/open_jdk_jre/bin/java $JAVA_OPTS -cp $PWD/. org.springframework.boot.loader.JarLauncher
+  disk quota:          1G
+  health check type:   port
+  instances:           1
+  memory:              1G
+  stack:               cflinuxfs2
+  routes:
+    mybookrating.cfapps.io
+
+Updating app mybookrating...
+Mapping routes...
+Comparing local files to remote cache...
+Packaging files to upload...
+Uploading files...
+   .... ....
+   ... <<a lot more output>>
+   .... ....
+```
+
+Once the application is pushed, PCF will try to start it automatically (and connecting to DSE). But since at this point, the application is not bound with the service yet, it will fail and PCF outpu will show the application is crashed. This is expected.
+
+2) Bind the application with the service
+
+```
+$ cf bind-service mybookrating mycassauth-service
+Binding service mycassauth-service to app mybookrating in org datastax-test / space mytestspace as <registered_trial_account_email>...
+OK
+TIP: Use 'cf restage mybookrating' to ensure your env variable changes take effect
+```
+
+3) Restrage the application
+
+```
+$ cf restage mybookrating
+Restaging app mybookrating in org datastax-test / space mytestspace as <registered_trial_account_email>...
+timeout connecting to log server, no log will be shown
+
+Staging app and tracing logs...
+   Downloaded build artifacts cache (132B)
+   Downloaded app package (23.2M)
+   -----> Java Buildpack v4.16.1 (offline) | https://github.com/cloudfoundry/java-buildpack.git#41b8ff8
+   -----> Downloading Jvmkill Agent 1.16.0_RELEASE from https://java-buildpack.cloudfoundry.org/jvmkill/trusty/x86_64/jvmkill-1.16.0_RELEASE.so (found in cache)
+   -----> Downloading Open Jdk JRE 1.8.0_192 from https://java-buildpack.cloudfoundry.org/openjdk/trusty/x86_64/openjdk-1.8.0_192.tar.gz (found in cache)
+          Expanding Open Jdk JRE to .java-buildpack/open_jdk_jre (1.1s)
+          JVM DNS caching disabled in lieu of BOSH DNS caching
+   -----> Downloading Open JDK Like Memory Calculator 3.13.0_RELEASE from https://java-buildpack.cloudfoundry.org/memory-calculator/trusty/x86_64/memory-calculator-3.13.0_RELEASE.tar.gz (found in cache)
+          Loaded Classes: 15719, Threads: 250
+   -----> Downloading Client Certificate Mapper 1.8.0_RELEASE from https://java-buildpack.cloudfoundry.org/client-certificate-mapper/client-certificate-mapper-1.8.0_RELEASE.jar (found in cache)
+   -----> Downloading Container Security Provider 1.16.0_RELEASE from https://java-buildpack.cloudfoundry.org/container-security-provider/container-security-provider-1.16.0_RELEASE.jar (found in cache)
+   -----> Downloading Spring Auto Reconfiguration 2.5.0_RELEASE from https://java-buildpack.cloudfoundry.org/auto-reconfiguration/auto-reconfiguration-2.5.0_RELEASE.jar (found in cache)
+   Exit status 0
+   Uploading droplet, build artifacts cache...
+   Uploading droplet...
+   Uploading build artifacts cache...
+   Uploaded build artifacts cache (132B)
+   Uploaded droplet (69.9M)
+   Uploading complete
+   Cell 2c755f28-7f03-4a12-871c-7b1e60306330 stopping instance f07ed4f4-176d-4f1c-9d59-5175674c5692
+   Cell 2c755f28-7f03-4a12-871c-7b1e60306330 destroying container for instance f07ed4f4-176d-4f1c-9d59-5175674c5692
+
+Waiting for app to start...
+
+name:              mybookrating
+requested state:   started
+routes:            mybookrating.cfapps.io
+last uploaded:     Mon 26 Nov 21:47:54 PST 2018
+stack:             cflinuxfs2
+buildpacks:        client-certificate-mapper=1.8.0_RELEASE container-security-provider=1.16.0_RELEASE
+                   java-buildpack=v4.16.1-offline-https://github.com/cloudfoundry/java-buildpack.git#41b8ff8 java-main
+                   java-opts java-security jvmkill-agent=1.16.0_RELEASE open-jd...
+
+type:            web
+instances:       1/1
+memory usage:    1024M
+start command:   JAVA_OPTS="-agentpath:$PWD/.java-buildpack/open_jdk_jre/bin/jvmkill-1.16.0_RELEASE=printHeapHistogram=1
+                 -Djava.io.tmpdir=$TMPDIR
+                 -Djava.ext.dirs=$PWD/.java-buildpack/container_security_provider:$PWD/.java-buildpack/open_jdk_jre/lib/ext
+                 -Djava.security.properties=$PWD/.java-buildpack/java_security/java.security $JAVA_OPTS" &&
+                 CALCULATED_MEMORY=$($PWD/.java-buildpack/open_jdk_jre/bin/java-buildpack-memory-calculator-3.13.0_RELEASE
+                 -totMemory=$MEMORY_LIMIT -loadedClasses=16498 -poolType=metaspace -stackThreads=250 -vmOptions="$JAVA_OPTS") &&
+                 echo JVM Memory Configuration: $CALCULATED_MEMORY && JAVA_OPTS="$JAVA_OPTS $CALCULATED_MEMORY" &&
+                 MALLOC_ARENA_MAX=2 SERVER_PORT=$PORT eval exec $PWD/.java-buildpack/open_jdk_jre/bin/java $JAVA_OPTS -cp $PWD/.
+                 org.springframework.boot.loader.JarLauncher
+     state     since                  cpu    memory        disk           details
+#0   running   2018-11-27T05:48:14Z   0.0%   34.7M of 1G   151.5M of 1G
+```
+
+At this point, the application is successfully started and connects to DSE using the provided credentials from PCF CUPS.

@@ -70,7 +70,9 @@ Deploying Mysql...
  	Regular user => Email: user / Password: pass
 ```
 
-5) Login PCF Web Service
+5) Log in PCF Web Service (using the registered trial account) Console WebUI; Set up a testing Org (**datastax-test**) and a testing Space (**mytestspace**) under the Organization
+
+6) Log in PCF from CF CLI, using the registered trial account. Once logged in, the targeted Org. and Space will be default to the ones created in step 5) 
 ```
 $ cf login -a api.run.pivotal.io
 API endpoint: api.run.pivotal.io
@@ -83,13 +85,17 @@ OK
 
 Targeted org datastax-test
 
-Targeted space development
-
+Targeted space mytestspace
 
 API endpoint:   https://api.run.pivotal.io (API version: 2.125.0)
 User:           <registered_free_trial_account_email>
 Org:            datastax-test
-Space:          development
+Space:          mytestspace
+```
+
+7) (Optional) If needed, you can change the targeted Org. or Space from CF CLI
+```
+cf target [-o ORG] [-s SPACE]
 ```
 
 ## PCF CUPS

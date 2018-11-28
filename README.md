@@ -100,3 +100,22 @@ cf target [-o ORG] [-s SPACE]
 
 ## PCF CUPS
 
+In this example, since DSE requires user authentication and clien-to-server SSL/TLS encryption, the developed java application needs to provide the following credentials in order to be able to connect to DSE successfully:
+* Cassandra username
+* Cassandra password
+* Client truststore password
+
+Instead of embedding these credentials in the application, it is recommended to store these credentials in PCF CUPS and let the application to fetch them dynamically. The benefits of doing so are: 1) it is more secure because the credentials are stored only in PCF; 2) it is more flexible because changing the required DSE credentials doesn't need the applcation to be redeployed.
+
+In this example, a PCF user provided service (**mycassauth-service**) is created for this purpose.
+```
+cf cups mycassauth-service -p "cass_username,cass_password,truststore_pass"
+
+cass_username> <cassandra_username>
+
+cass_password> <cassandra_user_password>
+
+truststore_pass> <client_truststore_password>
+Creating user provided service mycassauth-service in org datastax-test / space mytestspace as <registered_trial_account_email>...
+OK
+```

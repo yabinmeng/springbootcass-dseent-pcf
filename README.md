@@ -128,12 +128,12 @@ The application is developed in a way that it will read the required credentials
 
 1) Push the application
 ```
-$ cf push mybookrating -p ./build/libs/mybookrating-0.0.1-SNAPSHOT.jar
+$ cf push mybookrating -p ./build/libs/dseent-pcf-0.0.1-SNAPSHOT.jar 
 Pushing app mybookrating to org datastax-test / space mytestspace as <registered_trial_account_email>...
 Getting app info...
 Updating app with these attributes...
   name:                mybookrating
-  path:                <some_root_folder>/build/libs/mybookrating-0.0.1-SNAPSHOT.jar
+  path:                <some_root_folder>/build/libs/dseent-pcf-0.0.1-SNAPSHOT.jar 
   command:             JAVA_OPTS="-agentpath:$PWD/.java-buildpack/open_jdk_jre/bin/jvmkill-1.16.0_RELEASE=printHeapHistogram=1 -Djava.io.tmpdir=$TMPDIR -Djava.ext.dirs=$PWD/.java-buildpack/container_security_provider:$PWD/.java-buildpack/open_jdk_jre/lib/ext -Djava.security.properties=$PWD/.java-buildpack/java_security/java.security $JAVA_OPTS" && CALCULATED_MEMORY=$($PWD/.java-buildpack/open_jdk_jre/bin/java-buildpack-memory-calculator-3.13.0_RELEASE -totMemory=$MEMORY_LIMIT -loadedClasses=16498 -poolType=metaspace -stackThreads=250 -vmOptions="$JAVA_OPTS") && echo JVM Memory Configuration: $CALCULATED_MEMORY && JAVA_OPTS="$JAVA_OPTS $CALCULATED_MEMORY" && MALLOC_ARENA_MAX=2 SERVER_PORT=$PORT eval exec $PWD/.java-buildpack/open_jdk_jre/bin/java $JAVA_OPTS -cp $PWD/. org.springframework.boot.loader.JarLauncher
   disk quota:          1G
   health check type:   port
@@ -222,3 +222,13 @@ start command:   JAVA_OPTS="-agentpath:$PWD/.java-buildpack/open_jdk_jre/bin/jvm
 ```
 
 At this point, the application is successfully started and connects to DSE using the provided credentials from PCF CUPS.
+
+
+## Test the Application from PCF endpoint
+
+When the application is pushed to PCF, it is given a PCF route (endpoint). For my testing application, the route is:
+https://mybookrating.cfapps.io/
+
+At this point, we can test the Rest APIs as provided by this application for data writing and reading from DSE. The screenshot below is the result returned in the web browser.
+
+

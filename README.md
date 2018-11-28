@@ -164,7 +164,7 @@ OK
 TIP: Use 'cf restage mybookrating' to ensure your env variable changes take effect
 ```
 
-3) Restrage the application
+3) Restage the application
 
 ```
 $ cf restage mybookrating
@@ -231,4 +231,4 @@ https://mybookrating.cfapps.io/
 
 At this point, we can test the Rest APIs as provided by this application for data writing and reading from DSE. The screenshot below is the result returned in the web browser.
 
-
+<img src="https://github.com/yabinmeng/springbootcass-dseent-pcf/blob/master/src/main/resources/pcf_springboot.png" width="800" height="300">

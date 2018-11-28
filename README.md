@@ -24,7 +24,7 @@ cf: v5.3.0
 cf-mysql: 36.15.0
 ```
 
-## Set up PCF DEV environment
+## Set up PCF Environment
 
 1) Register a PCF trail account
 

@@ -26,7 +26,7 @@ cf-mysql: 36.15.0
 
 ## Set up PCF Environment
 
-1) Register a PCF trail account
+1) Register a PCF trial account
 
 2) Install CF CLI
 https://docs.pivotal.io/pivotalcf/2-3/cf-cli/install-go-cli.html

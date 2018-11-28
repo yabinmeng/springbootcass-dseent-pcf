@@ -9,29 +9,38 @@ import org.springframework.context.annotation.PropertySource;
 @ConfigurationProperties(prefix = "vcap.services.mycassauth-service.credentials")
 public class MyTestAuthServiceProperties {
 
-    private String username;
-    private String password;
+    private String cass_username;
+    private String cass_password;
+    private String truststore_pass;
 
     public MyTestAuthServiceProperties() {
 
     }
 
-    public MyTestAuthServiceProperties(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public MyTestAuthServiceProperties(
+        String cass_username, String cass_password, String truststore_pass) {
+
+        this.cass_username = cass_username;
+        this.cass_password = cass_password;
+        this.truststore_pass = truststore_pass;
     }
 
-    public void setUsername(String cass_username) {
-        this.username = cass_username;
+    public void setCass_username(String cass_username) {
+        this.cass_username = cass_username;
     }
-    public String getUsername() {
-        return this.username;
+    public String getCass_username() {
+        return this.cass_username;
     }
 
-    public void setPassword(String cass_password) {
-        this.password = cass_password;
+    public void setCass_password(String cass_password) {
+        this.cass_password = cass_password;
     }
-    public String getPassword() {
-        return this.password;
+    public String getCass_password() {
+        return this.cass_password;
+    }
+
+    public void setTruststore_pass(String truststore_pass) { this.truststore_pass = truststore_pass; }
+    public String getTruststore_pass() {
+        return this.truststore_pass;
     }
 }

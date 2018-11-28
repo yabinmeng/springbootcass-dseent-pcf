@@ -52,15 +52,13 @@ public class DseConfig {
         boolean useSSL = Boolean.valueOf(env.getProperty("cassandra.usessl"));
 
         if (useSSL) {
-            //String sslTrustStoreFile = env.getProperty("cassandra.ssl.truststore.file");
-            String sslTrustStorePwd = env.getProperty("cassandra.ssl.truststore.passwd");
 
             SSLContext sslContext = null;
-
             InputStream is = null;
 
             try {
-                DseConfig.class.getClassLoader().getResourceAsStream("mytruststore");
+                is = DseConfig.class.getClassLoader().getResourceAsStream("mytruststore");
+                String sslTrustStorePwd = authServiceProperties.getTruststore_pass();
 
                 char[] pwd = sslTrustStorePwd.toCharArray();
 
@@ -110,14 +108,11 @@ public class DseConfig {
         boolean userAuth = Boolean.valueOf(env.getProperty("cassandra.userauth"));
 
         if (userAuth) {
-            //String userName = env.getProperty("cassandra.auth.username");
-            //String passWord = env.getProperty("cassandra.auth.passwd");
-
-            String userName = authServiceProperties.getUsername();
-            String passWord = authServiceProperties.getPassword();
+            String cass_username = authServiceProperties.getCass_username();
+            String cass_password = authServiceProperties.getCass_password();
 
             dseClusterBuilder
-                .withAuthProvider(new DsePlainTextAuthProvider(userName, passWord));
+                .withAuthProvider(new DsePlainTextAuthProvider(cass_username, cass_password));
         }
 
         // Reconnection Policy

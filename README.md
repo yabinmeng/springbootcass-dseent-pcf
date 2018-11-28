@@ -109,7 +109,7 @@ Instead of embedding these credentials in the application, it is recommended to 
 
 In this example, a PCF user provided service (**mycassauth-service**) is created for this purpose.
 ```
-cf cups mycassauth-service -p "cass_username,cass_password,truststore_pass"
+$ cf cups mycassauth-service -p "cass_username,cass_password,truststore_pass"
 
 cass_username> <cassandra_username>
 

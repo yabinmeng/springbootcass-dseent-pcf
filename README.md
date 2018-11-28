@@ -26,12 +26,12 @@ cf-mysql: 36.15.0
 
 ## Set up PCF DEV environment
 
-1) Register for a PCF trail account
+1) Register a PCF trail account
 
 2) Install CF CLI
 https://docs.pivotal.io/pivotalcf/2-3/cf-cli/install-go-cli.html
     
-3) Download and Install PCF DEV
+3) Install PCF DEV
 https://docs.pivotal.io/pcf-dev/index.html
 
 4) Start PCF DEV
@@ -122,9 +122,9 @@ OK
 
 After this, we can go to the PCF web service console Web UI to view the service details.
 
-## Deploy the Application 
+## Deploy the Application to PCF
 
-The application is developed in a way that it will read the required credentials from the PCF user provided service (**mycassauth-service**). Once the service is created, we need to push the application to PCF and bind it with the service.
+The application is developed in a way that it reads the required credentials from the PCF user provided service (**mycassauth-service**). Once the service is created, we need to push the application to PCF and bind it with the service.
 
 1) Push the application
 ```
@@ -153,7 +153,7 @@ Uploading files...
    .... ....
 ```
 
-Once the application is pushed, PCF will try to start it automatically (and connecting to DSE). But since at this point, the application is not bound with the service yet, it will fail and PCF outpu will show the application is crashed. This is expected.
+Once the application is pushed, PCF will try to start it automatically (and connect to DSE). But at this point, the application is not bound with the service yet, it will fail and PCF output will show the application failed/crashed, which is expected.
 
 2) Bind the application with the service
 

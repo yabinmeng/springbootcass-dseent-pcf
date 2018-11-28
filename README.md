@@ -226,8 +226,8 @@ At this point, the application is successfully started and connects to DSE using
 
 ## Test the Application from PCF endpoint
 
-When the application is pushed to PCF, it is given a PCF route (endpoint). For my testing application, the route is:
-https://mybookrating.cfapps.io/
+When the application is pushed to PCF, it is given a PCF route (API endpoint). For my testing application, the route is:
+"https://mybookrating.cfapps.io/"
 
 At this point, we can test the Rest APIs as provided by this application for data writing and reading from DSE. The screenshot below is the result returned in the web browser.
 

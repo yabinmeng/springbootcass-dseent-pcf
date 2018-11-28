@@ -70,7 +70,7 @@ Deploying Mysql...
  	Regular user => Email: user / Password: pass
 ```
 
-5) Log in PCF Web Service Console WebUI (using the registered trial account); Set up a testing Org (**datastax-test**) and a testing Space (**mytestspace**) under the Organization
+5) Log in PCF Web Service Console WebUI (using the registered trial account); Set up a testing Org. (**datastax-test**) and a testing Space (**mytestspace**) under the Org.
 
 6) Log in PCF from CF CLI, using the registered trial account. Once logged in, the targeted Org. and Space will be default to the ones created in step 5) 
 ```
